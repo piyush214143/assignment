@@ -33,15 +33,22 @@ import { ResponsiveSize } from '../../utils/ResponsiveSize';
 import InputText from '../../component/InputText';
 import { IMAGES } from '../../assets';
 import PieChart from 'react-native-pie-chart'
+import { getEmployeeTask } from '../../slice/ApiCalling';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Home = props => {
     const [show, setShow] = useState(true);
     const [mobileNumber, setMobileNumber] = useState('');
     const [password, setPassword] = useState('');
     const [isEnabled, setIsEnabled] = useState(false);
+    const [taskData , setTaskData] = useState ([])
     const widthAndHeight = 180
     const series = [140, 321, 80]
     const sliceColor = ['orange', '#1f51e5', '#ffffff']
+    const dispatch = useDispatch()
+    const userData = useSelector(state => state) 
+    console.log("userdata iredkdkdk" , userData?.user?.user?.user_id)
+    const taskID = userData?.user?.user?.user_id
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const data = [
         {
@@ -58,24 +65,37 @@ const Home = props => {
         },
       
       ];
-      const ImageData = () => {
+      const getAssignedTask = () => {
+        dispatch(getEmployeeTask(taskID)).then(result => {
+          console.log("result recievNEWWWWWWWWWWWWed logoin======", result)
+          if (result?.type === "getEmployeeTask/fulfilled") {
+          setTaskData(result?.payload)
+          } else{
+          Alert.alert("No Data fetched")
+          }
+        });
+      }
+      useEffect(() =>{
+getAssignedTask()
+      }, [])
+      const ImageData = (item) => {
+        console.log("tieeieieieieieieieieie"  , item)
         return (
           <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Restroom")
+            props.navigation.navigate("Restroom"  , item)
           }}
             style={styles.ImageDataStyle}>
             <View>
-            <Text style={{color:'black' , fontSize:15 , fontWeight:"bold"}}>Shivagi Nagar</Text>
+            <Text style={{color:'black' , fontSize:15 , fontWeight:"bold"}}>{item?.item?.restroom_id}</Text>
             <Text style={{color:"black" , fontSize:13}}>
-                5N1799
               </Text>
             </View>
          
             <View>
              <Text style={{color:'black' , fontSize:15 , fontWeight:"bold"}}>Due Time</Text>
              <Text style={{color:"black" , fontSize:13}}>
-                10:30 am
+                {item?.item?.due_time}
               </Text>
             </View>
           </TouchableOpacity>
@@ -84,7 +104,7 @@ const Home = props => {
 
     return (
         <View style={{backgroundColor:"#ffffff" , height:hp("100%")}}>
-            <HeaderComponent />
+            <HeaderComponent props={props}/>
 
            
                 <Text style={{color:"black" , textAlign:"center" , marginTop:hp("4%") , fontSize:20 , fontWeight:"bold"}}>Today's Work : 02052300 </Text>
@@ -112,7 +132,7 @@ const Home = props => {
             </View>
           
             <FlatList
-            data={data}
+            data={taskData}
             renderItem={ImageData}
             showsVerticalScrollIndicator={false}
             style={{padding:hp("2%")}}

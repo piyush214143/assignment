@@ -12,13 +12,42 @@ import {
   } from 'react-native-responsive-screen';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import { IMAGES } from '../../assets';
+import DrawerNavigation from '../../navigation/DrawerNavigation';
+import CustomDrawer from '../CustomerDrawer';
+
+const MainScreen = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.toggleButton} onPress={toggleDrawer}>
+        <Text style={styles.toggleButtonText}>{isDrawerOpen ? 'Close Drawer' : 'Open Drawer'}</Text>
+      </TouchableOpacity>
+
+      <CustomDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
+        {/* Content inside the drawer */}
+        <View style={styles.drawerContent}>
+          <Text>Drawer Content</Text>
+        </View>
+      </CustomDrawer>
+
+      {/* Main content of your screen */}
+      <View style={styles.mainContent}>
+        <Text>Main Content</Text>
+      </View>
+    </View>
+  );
+};
+
 
 
 
 
 const LoginHeaderComponent = ({props}) => {
-  console.log("dfdkjfjkdsjflk"  , props)
-
     const [show , setShow]  = useState(false)
     return(
 <View style={styles.SearchView}>
@@ -28,16 +57,22 @@ const LoginHeaderComponent = ({props}) => {
     >
       <Image
       style={styles.ImageView}
-      source={IMAGES.search_profileImage}
+      source={IMAGES.login_logo}
       resizeMode="contain"></Image>
   </TouchableOpacity>
   <Text style={styles.UserNameTextStyle}>
-    Piyush Shrivatava
+    TMS Application
   </Text>
+  <TouchableOpacity
+  onPress={() => {
+    <CustomDrawer/>
+  }}
+  >
   <Image
       style={styles.LeftImageView}
       source={IMAGES.detial_image}
       resizeMode="contain"></Image>
+      </TouchableOpacity>
 </View>
 <View style={styles.SearchMargin}>
 </View>
@@ -84,6 +119,29 @@ const styles = StyleSheet.create({
         // marginTop: hp("2%"),
         // flexDirection: "row"
         paddingRight: wp('2%'),
+      },
+      container: {
+        flex: 1,
+      },
+      toggleButton: {
+        padding: 10,
+        backgroundColor: 'lightblue',
+        alignItems: 'center',
+      },
+      toggleButtonText: {
+        color: '#fff',
+      },
+      drawerContent: {
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      mainContent: {
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
     
 })

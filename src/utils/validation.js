@@ -11,6 +11,10 @@ export const validateNumber = number => {
     return re.test(password);
   };
   
+  export const validateEmail = email => {
+    const re = /^(([^<>()[\]\\.,;:!\s@\"]+(\.[^<>()[\]\\.,;:!\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; //NOSONAR
+    return re.test(String(email).toLowerCase());
+  };
   export const isObjectEmpty = objectName => {
     for (let prop in objectName) {
       if (objectName.hasOwnProperty(prop)) {
@@ -24,7 +28,7 @@ export const validateNumber = number => {
     passwordEmpty: 'Please enter your password',
     passwordValidate: 'Please enter your  valid password',
     mobileEmpty: 'Please enter your employee ID',
-    mobileValidate: 'Please enter your employee ID',
+    mobileValidate: 'Please enter your mobile number',
     otpEmpty: 'Please enter OTP',
     otpValidate: 'Invalid Otp Provide!',
     confPassword: 'Confirm password and New Password must be same',

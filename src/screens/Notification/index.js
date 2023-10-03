@@ -63,7 +63,7 @@ const Notification = props => {
         return (
             <TouchableOpacity
                 // onPress={() => {
-                //     props.navigation.navigate("Restroom")
+                //     props.navigation.navigate("AssignWork")
                 // }}
                 style={styles.ImageDataStyle}>
                 <View>

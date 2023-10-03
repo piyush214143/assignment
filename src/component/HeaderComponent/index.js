@@ -5,19 +5,26 @@ import {
     TouchableOpacity,
     StyleSheet
   } from 'react-native';
-  import React, {useState} from 'react';
+  import React, {useState , useEffect} from 'react';
   import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import { IMAGES } from '../../assets';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 
 
 
-const HeaderComponent = ({props}) => {
-    const [show , setShow]  = useState(false)
+const HeaderComponent = (props) => {
+  const userData = useSelector(state => state)
+
+  const name = userData?.user?.user?.name
+  let position  = userData?.user?.user?.position_status
+
+ const vendorName = name?.split(' ');
     return(
 <View style={styles.SearchView}>
 <View style={styles.profileView}>
@@ -25,27 +32,37 @@ const HeaderComponent = ({props}) => {
     >
       <Image
       style={styles.ImageView}
-      source={IMAGES.search_profileImage}
+      source={IMAGES.login_logo}
       resizeMode="contain"></Image>
   </TouchableOpacity>
   <Text style={styles.UserNameTextStyle}>
-    Piyush Shrivatava
+    TMS Application
   </Text>
+ 
 </View>
 <View style={{flexDirection:"row" , justifyContent:"space-between" , marginTop:hp("2%")}}>
- 
+ <View>
   <Text style={{color:"#fff"}}>
-   Good Morning Kumar!
+   Welcome {name ? vendorName : null}
   </Text>
+  <Text style={styles.statusTextStyle}>
+    Log in as {position}
+  </Text>
+  </View>
   <View style={{flexDirection:"row"}}>
     <Image
       style={styles.NotificationView}
       source={IMAGES.notification_bell}
       resizeMode="contain"></Image>
+      <TouchableOpacity 
+      onPress={() => {
+        props?.props?.navigation?.navigate("Settings")
+      }}>
        <Image
       style={styles.DetailView}
       source={IMAGES.detial_image}
       resizeMode="contain"></Image>
+      </TouchableOpacity>
   </View>
 </View>
 
@@ -81,17 +98,17 @@ const styles = StyleSheet.create({
        
       },
       NotificationView: {
-        backgroundColor: 'black',
+        // backgroundColor: 'black',
         borderRadius: hp('4%'),
-        height: hp('3%'),
+        height: hp('4%'),
         width: wp('8%'),
        
       },
       DetailView: {
-        backgroundColor: 'black',
+        // backgroundColor: 'black',
         borderRadius: hp('4%'),
-        height: hp('3%'),
-        width: wp('8%'),
+        height: hp('2.5%'),
+        width: wp('7%'),
         marginLeft:5
        
       },
@@ -102,8 +119,14 @@ const styles = StyleSheet.create({
         width: wp('8%'),
       },
       UserNameTextStyle: {
-        marginLeft: wp('3%'),
+        marginLeft: wp('3%'), 
         fontSize: hp('2.5%'),
+        fontWeight: 'bold',
+        color: '#fff',
+      },
+      statusTextStyle: { 
+        // fontSize: hp('1.5%'),
+        marginTop:10,
         fontWeight: 'bold',
         color: '#fff',
       },

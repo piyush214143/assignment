@@ -18,13 +18,8 @@ import {Text, TextInput} from 'react-native-paper';
 import {IMAGES} from '../../assets';
 import { ResponsiveSize } from '../../utils/ResponsiveSize';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-console.log(windowWidth);
-console.log(windowHeight);
 
 const InputText = props => {
-  console.log(props.error, 'props error');
   const renderRightIcon = () => {
     return (
       <>
